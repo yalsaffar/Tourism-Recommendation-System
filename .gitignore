@@ -1,4 +1,6 @@
 lib/datasets/cosine_sim.npy
 lib/models/.ipynb_checkpoints
+lib/datasets/__pycache__
 lib/models/__pycache__
+
 lib/datasets/reviews.csv
