@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def flights_dataset():
-    df = pd.read_csv('flights_data_002.csv')
+    df = pd.read_csv("../datasets/flights_data_002.csv")
     df = df.drop(['conversion'], axis=1)
     df['local_arrival'] = pd.to_datetime(df['local_arrival'])
     df['local_departure'] = pd.to_datetime(df['local_departure'])
