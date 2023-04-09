@@ -9,8 +9,8 @@ warnings.filterwarnings("ignore")
 
 #titles,indices, cosine_sim, df = model_computations()
 def clf(counter , cosine_sim,user_df, pool_df):
-    titles = pd.read_csv('titles.csv')
-    df = pd.read_csv('df.csv')
+    titles = pd.read_csv('../datasets/data_filestitles.csv')
+    df = pd.read_csv('../datasets/data_filesdf.csv')
     df2 = df.reset_index()
     titles = pd.Series(df2['Description'])
     indices = pd.Series(df2.index, index = df2['Description'])

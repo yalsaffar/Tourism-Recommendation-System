@@ -1,3 +1,4 @@
+"""
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox
 
@@ -91,3 +92,4 @@ class MainWindow(QWidget):
             self.result_window.setWindowTitle('Travel Recommendations')
             self.result_window.show()
 
+"""
