@@ -41,7 +41,7 @@ def data_strcture():
         pool_df[x] = y
     pool_df = pd.DataFrame(0, index=pool_df.index, columns=pool_df.columns)
 
-    user_df = pd.DataFrame(index=range(1))
+    user_df = pd.DataFrame(index=range(100000))
 
     user_df['PriceLvl_1'] = np.nan
     user_df['PriceLvl_2'] = np.nan
@@ -74,5 +74,5 @@ def data_strcture():
     for y in x:
         user_df[x] = y
     user_df = pd.DataFrame(0, index=user_df.index, columns=user_df.columns)
-    user_df['UserId'] = range(1)
+    user_df['UserId'] = range(100000)
     return df, user_df, pool_df
