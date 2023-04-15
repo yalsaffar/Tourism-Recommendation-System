@@ -22,6 +22,51 @@ def data_strcture():
     pool_df['PriceLvl_20'] = np.nan
     pool_df['PriceLvl_30'] = np.nan
     pool_df['PriceLvl_40'] = np.nan
+    #---------------
+    pool_df['PriceLvl_1_airbnb'] = np.nan
+    pool_df['PriceLvl_2_airbnb'] = np.nan
+    pool_df['PriceLvl_3_airbnb'] = np.nan
+    pool_df['PriceLvl_4_airbnb'] = np.nan
+    pool_df['PriceLvl_5_airbnb'] = np.nan
+    pool_df['PriceLvl_6_airbnb'] = np.nan
+    pool_df['PriceLvl_7_airbnb'] = np.nan
+    pool_df['PriceLvl_8_airbnb'] = np.nan
+    pool_df['PriceLvl_9_airbnb'] = np.nan
+    pool_df['PriceLvl_10_airbnb'] = np.nan
+    pool_df['PriceLvl_15_airbnb'] = np.nan
+    #--------------
+    #---------------
+    pool_df['Beds_1_airbnb'] = np.nan
+    pool_df['Beds_2_airbnb'] = np.nan
+    pool_df['Beds_3_airbnb'] = np.nan
+    pool_df['Beds_4_airbnb'] = np.nan
+    pool_df['Beds_5_airbnb'] = np.nan
+    pool_df['Beds_6_airbnb'] = np.nan
+    pool_df['Beds_7_airbnb'] = np.nan
+    pool_df['Beds_8_airbnb'] = np.nan
+    pool_df['Beds_9_airbnb'] = np.nan
+    pool_df['Beds_10_airbnb'] = np.nan
+    #--------------
+    #---------------
+    pool_df['People_1_airbnb'] = np.nan
+    pool_df['People_2_airbnb'] = np.nan
+    pool_df['People_3_airbnb'] = np.nan
+    pool_df['People_4_airbnb'] = np.nan
+    pool_df['People_5_airbnb'] = np.nan
+    pool_df['People_6_airbnb'] = np.nan
+    pool_df['People_7_airbnb'] = np.nan
+    pool_df['People_8_airbnb'] = np.nan
+    pool_df['People_9_airbnb'] = np.nan
+    pool_df['People_10_airbnb'] = np.nan
+    pool_df['People_15_airbnb'] = np.nan
+    #--------------
+     #---------------
+    pool_df['Reviews_1_airbnb'] = np.nan
+    pool_df['Reviews_2_airbnb'] = np.nan
+    pool_df['Reviews_3_airbnb'] = np.nan
+    pool_df['Reviews_4_airbnb'] = np.nan
+    pool_df['Reviews_5_airbnb'] = np.nan
+    #--------------
     pool_df['Beach'] = np.nan
     pool_df['Nature'] = np.nan
     pool_df['Cultural'] = np.nan
@@ -57,6 +102,52 @@ def data_strcture():
     user_df['PriceLvl_20'] = np.nan
     user_df['PriceLvl_30'] = np.nan
     user_df['PriceLvl_40'] = np.nan
+
+    #---------------
+    user_df['PriceLvl_1_airbnb'] = np.nan
+    user_df['PriceLvl_2_airbnb'] = np.nan
+    user_df['PriceLvl_3_airbnb'] = np.nan
+    user_df['PriceLvl_4_airbnb'] = np.nan
+    user_df['PriceLvl_5_airbnb'] = np.nan
+    user_df['PriceLvl_6_airbnb'] = np.nan
+    user_df['PriceLvl_7_airbnb'] = np.nan
+    user_df['PriceLvl_8_airbnb'] = np.nan
+    user_df['PriceLvl_9_airbnb'] = np.nan
+    user_df['PriceLvl_10_airbnb'] = np.nan
+    user_df['PriceLvl_15_airbnb'] = np.nan
+    #--------------
+    #---------------
+    user_df['Beds_1_airbnb'] = np.nan
+    user_df['Beds_2_airbnb'] = np.nan
+    user_df['Beds_3_airbnb'] = np.nan
+    user_df['Beds_4_airbnb'] = np.nan
+    user_df['Beds_5_airbnb'] = np.nan
+    user_df['Beds_6_airbnb'] = np.nan
+    user_df['Beds_7_airbnb'] = np.nan
+    user_df['Beds_8_airbnb'] = np.nan
+    user_df['Beds_9_airbnb'] = np.nan
+    user_df['Beds_10_airbnb'] = np.nan
+    #--------------
+    #---------------
+    user_df['People_1_airbnb'] = np.nan
+    user_df['People_2_airbnb'] = np.nan
+    user_df['People_3_airbnb'] = np.nan
+    user_df['People_4_airbnb'] = np.nan
+    user_df['People_5_airbnb'] = np.nan
+    user_df['People_6_airbnb'] = np.nan
+    user_df['People_7_airbnb'] = np.nan
+    user_df['People_8_airbnb'] = np.nan
+    user_df['People_9_airbnb'] = np.nan
+    user_df['People_10_airbnb'] = np.nan
+    user_df['People_15_airbnb'] = np.nan
+    #--------------
+    #---------------
+    user_df['Reviews_1_airbnb'] = np.nan
+    user_df['Reviews_2_airbnb'] = np.nan
+    user_df['Reviews_3_airbnb'] = np.nan
+    user_df['Reviews_4_airbnb'] = np.nan
+    user_df['Reviews_5_airbnb'] = np.nan
+    #----------------
     user_df['Beach'] = np.nan
     user_df['Nature'] = np.nan
     user_df['Cultural'] = np.nan

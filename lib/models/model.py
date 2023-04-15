@@ -1,4 +1,5 @@
 import sys
+from statistics import mean
 
 # Add a path to sys.path
 sys.path.append('../datasets')
@@ -8,6 +9,8 @@ from data_structure import data_strcture
 from Ranges import Ranges
 import numpy as np
 import pandas as pd
+from Airbnb_reco import Airbnb_reco
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -36,7 +39,7 @@ def clf( user_df, pool_df,cosine_sim,previous='ALC'):
     
 
     
-    print(user_df)
+    #print(user_df)
     location = input()
 
     city_names = list(set(df['cityTo'])) 
@@ -72,4 +75,48 @@ def clf( user_df, pool_df,cosine_sim,previous='ALC'):
     
     pool_df, updated_user_df = users(0 ,df, user_df, pool_df, reco_final['cityTo'].iloc[0], reco_final['category'].iloc[0], reco_final['price'].iloc[0], str(reco_final['local_departure'].iloc[0]), int(indicator))
     user_df = updated_user_df.copy()
-    return pool_df, user_df 
+    return pool_df, user_df,reco_final.iloc[0]
+#------------------------------------------------------------
+def Rent_Reco(location,previous,best_price,best_beds,best_People,best_reviews):
+    titles = pd.read_csv('../datasets/data_files/titles_air.csv')
+    df = pd.read_csv('../datasets/data_files/airbnb_clean.csv')
+    df2 = df.reset_index()
+    titles = pd.Series(df2['Text'])
+    indices = pd.Series(df2.index, index = df2['Text'])
+    cosine_sim = np.load('../datasets/data_files/cosine_sim_air.npy')
+    recos = Airbnb_reco(location,previous,best_price,best_beds,best_People,best_reviews,titles,indices, cosine_sim, df)
+    return recos.head(50)
+        
+def clf_Airbnb(UserId,user_df,pool_df,df,City,price_flight,category,time,prev = 50059918):
+    price_ranges, time_cols_dict, cities_dict, price_ranges_air, beds_ranges, people_ranges, reviews_ranges = Ranges()
+    #City = 'Madrid' #inputed
+    #prev = 50059918 # recursive
+    #price_flight = 200 #inputed
+    #category = 'Historical' #inputed
+    #time = '2023-04-15 14:30:45' #inputed
+
+    #-------------------------
+    price_max_air = user_df[user_df['UserId'] == UserId].filter(regex='PriceLvl.*airbnb').idxmax(axis=1)
+    beds_max_air = user_df[user_df['UserId']==UserId].filter(like='Beds_').idxmax(axis=1)
+    people_max_air = user_df[user_df['UserId']==UserId].filter(like='People_').idxmax(axis=1)
+    reviews_max_air = user_df[user_df['UserId']==UserId].filter(like='Reviews_').idxmax(axis=1)
+
+    best_price_air = mean(price_ranges_air[str(price_max_air)[5:-14]])
+    best_beds_air = mean(beds_ranges[str(beds_max_air)[5:-14]])
+    best_people_air = mean(people_ranges[str(people_max_air)[5:-14]])
+    best_reviews_air = mean(reviews_ranges[str(reviews_max_air)[5:-14]])
+    # ---------------------------
+    print(City,prev, best_price_air,best_beds_air,best_people_air, best_reviews_air)
+
+    reco = Rent_Reco(City,prev, best_price_air,best_beds_air,best_people_air, best_reviews_air)
+    #r = Airbnb_reco('Malaga',50059918,200,10,2,100,titles,indices, cosine_sim, df)
+
+
+    reco = reco.sort_values(['fear', 'anger', 'negative', 'sadness', 'disgust',]).sort_values([ 'number_of_reviews','trust', 'surprise','positive',  'joy'],ascending=False)
+    reco = reco.head(10)
+    print(reco['listing_url'].iloc[0])
+    print("Do you like this offer? 1 for yes, 0 for no")
+    indicator = input()
+    pool_df, updated_user_df = users(UserId ,df, user_df, pool_df, reco['City'].iloc[0], category, price_flight,reco['price'].iloc[0],reco['beds'].iloc[0],reco['People'].iloc[0],reco['number_of_reviews'].iloc[0], time, int(indicator))
+    user_df = updated_user_df.copy()
+    return pool_df, user_df, reco.iloc[0]

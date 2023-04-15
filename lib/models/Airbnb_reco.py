@@ -19,48 +19,69 @@ from Airbnb_data import Airbnb_data
 
 
 
-def model_computations():
+def model_computations(field):
     def clean_text(text):
         text = "".join([word.lower() for word in text if word not in string.punctuation])
         tokens = re.findall('\S+', text)
         text = [ps.stem(word) for word in tokens if word not in stopwords.words('english')]
         text = [wn.lemmatize(word) for word in tokens if word not in stopwords.words('english')]
         return text
-    df = Airbnb_data()
+    df = Airbnb_data().head(25000)
     ps = nltk.PorterStemmer()
     wn = nltk.WordNetLemmatizer()   
-    df['Text'] = df.Description.apply(lambda x: clean_text(x))
-    df['Text'] = df['Text'].apply(lambda x: ' '.join(x))
-
+    df[field] = df[field].apply(lambda x: clean_text(x))
+    df[field] = df[field].apply(lambda x: ' '.join(x))
+    print('50 PERCENT')
 
     tf = TfidfVectorizer(analyzer='word', ngram_range=(1, 2), min_df = 0, stop_words='english')
-    tfidf_matrix = tf.fit_transform(df['Text'])
+    tfidf_matrix = tf.fit_transform(df[field])
     cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
     df2 = df.reset_index()
-    titles = pd.Series(df2['Text'])
-    indices = pd.Series(df2.index, index = df2['Text'])
+    titles = pd.Series(df2[field])
+    indices = pd.Series(df2.index, index = df2[field])
     return titles,indices, cosine_sim, df
 
 
 
 
-def Airbnb_reco(location,previous,best,titles,indices, cosine_sim, df):
+def Airbnb_reco(location,previous,best_price,best_beds,best_People,best_reviews,titles,indices, cosine_sim, df):
     # best is previous best id of place
     # location is the most liked city
-    title = df.loc[df['id'] == best, 'Text'].iloc[0]
+    #print(df)
+    title = df.loc[(df['price'] >= best_price - 150) & (df['price'] <= best_price + 150) & (df['beds'] >= best_beds - 2) & (df['beds'] <= best_beds + 2)&(df['People'] >= best_People - 1.5) & (df['People'] <= best_People + 1.5)&(df['number_of_reviews'] >= best_reviews - 150) & (df['number_of_reviews'] <= best_reviews + 150), 'Text'].iloc[0]
+    print(title)
     idx = indices[title]  # Defining a variable with indices
+    #print(idx)
+    #print('-------')
     sim_scores = list(enumerate(cosine_sim[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1].all(), reverse=True)
-    sim_scores = sim_scores  # Taking the 30 most similar movies
-    movie_indices = [i[0] for i in sim_scores]
-    listy= list(titles.iloc[movie_indices][~titles.iloc[movie_indices].isin([title])]) # returns the title based on movie indices
+    #print(sim_scores)
+    #print('-------')
 
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    #print(sim_scores)
+    #print('-------')
+
+    sim_scores = sim_scores[:8000]  # Taking the 30 most similar movies
+    #print(sim_scores)
+    #print('-------')
+
+    movie_indices = [i[0] for i in sim_scores]
+    #print(movie_indices)
+    #print('-------')
+
+    listy= list(titles.iloc[movie_indices][~titles.iloc[movie_indices].isin([title])]) # returns the title based on movie indices
+    #print(len(listy))
+    #print('-------')
     #listy = list(get_recommendations(df.loc[df['flyTo'] == location, 'Description'].iloc[0],titles,indices, cosine_sim))
 
     filtered_df = df[df['Text'].isin(listy)]
-    filtered_df = filtered_df[filtered_df['City']== location]
-    if previous != 0:
+    #print(len(filtered_df))
 
-        filtered_df = filtered_df[filtered_df['id'] != previous]
+    filtered_df = filtered_df[filtered_df['City']== location]
+    print('----------')
+    print(len(filtered_df))
+    print('----------')
+
+    filtered_df = filtered_df[filtered_df['id'] != previous]
     
     return filtered_df
