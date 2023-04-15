@@ -18,7 +18,7 @@ warnings.filterwarnings("ignore")
 
 
 #titles,indices, cosine_sim, df = model_computations()
-def clf( user_df, pool_df,cosine_sim,previous='ALC'):
+def clf( user_df, pool_df,cosine_sim,location,previous='ALC'):
     #titles,indices, cosine_sim, df = model_computations()
     titles = pd.read_csv('../datasets/data_files/titles.csv')
     df = pd.read_csv('../datasets/data_files/df.csv')
@@ -40,7 +40,7 @@ def clf( user_df, pool_df,cosine_sim,previous='ALC'):
 
     
     #print(user_df)
-    location = input()
+    #location = input()
 
     city_names = list(set(df['cityTo'])) 
     city_counts = user_df.filter(items=city_names).sum().sort_values(ascending=False)
@@ -66,16 +66,21 @@ def clf( user_df, pool_df,cosine_sim,previous='ALC'):
 
     reco_final = pd.concat([reco_filtered,reco_filtered2,reco_filtered3, reco_others,reco_others2,reco_others3])
     reco_final = reco_final.drop_duplicates(keep='first')
-
+    
     previous = reco_final['flyTo'].iloc[0]
     print("-------------------------------")
-    print("Do you like this offer: (yes:1, no:0)")
-    indicator = input()
+    #print("Do you like this offer: (yes:1, no:0)")
+    #indicator = input()
     #print( reco_final['cityTo'].iloc[0], reco_final['category'].iloc[0], reco_final['price'].iloc[0], str(reco_final['local_departure'].iloc[0]), indicator)
     
-    pool_df, updated_user_df = users(0 ,df, user_df, pool_df, reco_final['cityTo'].iloc[0], reco_final['category'].iloc[0], reco_final['price'].iloc[0], str(reco_final['local_departure'].iloc[0]), int(indicator))
-    user_df = updated_user_df.copy()
-    return pool_df, user_df,reco_final.iloc[0]
+    #pool_df, updated_user_df = users(0 ,df, user_df, pool_df, reco_final['cityTo'].iloc[0], reco_final['category'].iloc[0], reco_final['price'].iloc[0], str(reco_final['local_departure'].iloc[0]), int(indicator))
+    #user_df = updated_user_df.copy()
+    City = reco_final['cityTo'].iloc[0]
+    Category = reco_final['category'].iloc[0]
+    Price_flight =  reco_final['price'].iloc[0]
+    time =  str(reco_final['local_departure'].iloc[0])
+    
+    return reco_final.iloc[0], City, Category, Price_flight, time
 #------------------------------------------------------------
 def Rent_Reco(location,previous,best_price,best_beds,best_People,best_reviews):
     titles = pd.read_csv('../datasets/data_files/titles_air.csv')
@@ -87,7 +92,7 @@ def Rent_Reco(location,previous,best_price,best_beds,best_People,best_reviews):
     recos = Airbnb_reco(location,previous,best_price,best_beds,best_People,best_reviews,titles,indices, cosine_sim, df)
     return recos.head(50)
         
-def clf_Airbnb(UserId,user_df,pool_df,df,City,price_flight,category,time,prev = 50059918):
+def clf_Airbnb(UserId,user_df,pool_df,df,City,Price_flight,Category,time,prev = 50059918):
     price_ranges, time_cols_dict, cities_dict, price_ranges_air, beds_ranges, people_ranges, reviews_ranges = Ranges()
     #City = 'Madrid' #inputed
     #prev = 50059918 # recursive
@@ -114,9 +119,15 @@ def clf_Airbnb(UserId,user_df,pool_df,df,City,price_flight,category,time,prev = 
 
     reco = reco.sort_values(['fear', 'anger', 'negative', 'sadness', 'disgust',]).sort_values([ 'number_of_reviews','trust', 'surprise','positive',  'joy'],ascending=False)
     reco = reco.head(10)
-    print(reco['listing_url'].iloc[0])
-    print("Do you like this offer? 1 for yes, 0 for no")
-    indicator = input()
-    pool_df, updated_user_df = users(UserId ,df, user_df, pool_df, reco['City'].iloc[0], category, price_flight,reco['price'].iloc[0],reco['beds'].iloc[0],reco['People'].iloc[0],reco['number_of_reviews'].iloc[0], time, int(indicator))
-    user_df = updated_user_df.copy()
-    return pool_df, user_df, reco.iloc[0]
+    #print(reco['listing_url'].iloc[0])
+    #print("Do you like this offer? 1 for yes, 0 for no")
+    #indicator = input()
+    #pool_df, updated_user_df = users(UserId ,df, user_df, pool_df, reco['City'].iloc[0], category, price_flight,reco['price'].iloc[0],reco['beds'].iloc[0],reco['People'].iloc[0],reco['number_of_reviews'].iloc[0], time, int(indicator))
+    #user_df = updated_user_df.copy()
+    City= reco['City'].iloc[0]
+    Price_Air = reco['price'].iloc[0]
+    Beds_air = reco['beds'].iloc[0]
+    People_air = reco['People'].iloc[0]
+    Reviews_air = reco['number_of_reviews'].iloc[0]
+    
+    return pool_df, user_df, reco.iloc[0], City, Category, Price_flight, time, Price_Air,Beds_air,People_air,Reviews_air
