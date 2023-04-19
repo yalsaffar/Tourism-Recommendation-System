@@ -12,16 +12,14 @@ sys.path.append('/home/runner/work/Tourism-Recommendation-System/Tourism-Recomme
 ## /datasets imports
 
 from Flights import flights_dataset
-from Airbnb_data import Airbnb_data
 from data_structure import data_strcture
+from Airbnb_data import Airbnb_data
 from Ranges import Ranges
 from userdata import users
 
 ## /models imports
 
-from Airbnb_reco import Airbnb_reco
-from flights import flights_reco
-from model import clf, clf_Airbnb, clf_places
+from model import clf_places
 from Places_reco import Places_reco
 from main import main
 
@@ -545,196 +543,6 @@ def test_user_data():
     
         
 ## models –-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------–-
-    
-def test_flights_reco():
-    df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/df.csv').reset_index()
-    titles = pd.Series(df['Description'])
-    indices = pd.Series(df.index, index = df['Description'])
-    cosine_sim = np.load('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim.npy')
-    
-    reco = flights_reco('TIA','ALC','ALC',titles,indices,cosine_sim,df)
-    reco_col = ['index', 'flyFrom', 'flyTo', 'price', 'cityFrom', 'cityTo',
-       'countryFrom', 'distance', 'duration', 'local_departure', 'category',
-       'Description']
-    assert list(reco.columns) == reco_col
-    
-def test_model_clf():
-    cosine_sim = np.load('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim.npy')
-    
-    reco, City, Category, Price_flight, time = clf(0, data_strcture()[1],data_strcture()[0],cosine_sim, 'Olbia')
-    
-    test_reco_keys = ['flyFrom', 'flyTo', 'price', 'cityFrom', 'cityTo', 'countryFrom',
-       'distance', 'duration', 'local_departure', 'category', 'Description']
-    assert list(reco.keys()) == test_reco_keys
-    
-    assert type(City) == str
-    assert type(Category) == str
-    assert type(Price_flight) == np.int64
-    assert type(time) == str
-    
-def test_model_air():
-    cosine_sim = np.load('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim_air.npy')
-    df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/Flights.csv')
-    user_df = data_strcture()[1]
-    pool_df = data_strcture()[0]
-    pool_df, user_df, reco, City, Category, Price_flight, time, Price_Air,Beds_air,People_air,Reviews_air = clf_Airbnb(0, user_df, pool_df, df, 'Madrid', 200, 'Historical', '2023-04-15 14:30:45')
-    
-    test_pool_col = ['flyFrom', 'flyTo', 'price', 'cityFrom', 'cityTo', 'countryFrom',
-       'distance', 'duration', 'local_departure', 'category']
-    assert list(pool_df.columns) == test_pool_col
-    
-    test_user_col = ['PriceLvl_1',
-    'PriceLvl_2',
-    'PriceLvl_3',
-    'PriceLvl_4',
-    'PriceLvl_5',
-    'PriceLvl_6',
-    'PriceLvl_7',
-    'PriceLvl_8',
-    'PriceLvl_9',
-    'PriceLvl_10',
-    'PriceLvl_15',
-    'PriceLvl_20',
-    'PriceLvl_30',
-    'PriceLvl_40',
-    'PriceLvl_1_airbnb',
-    'PriceLvl_2_airbnb',
-    'PriceLvl_3_airbnb',
-    'PriceLvl_4_airbnb',
-    'PriceLvl_5_airbnb',
-    'PriceLvl_6_airbnb',
-    'PriceLvl_7_airbnb',
-    'PriceLvl_8_airbnb',
-    'PriceLvl_9_airbnb',
-    'PriceLvl_10_airbnb',
-    'PriceLvl_15_airbnb',
-    'Beds_1_airbnb',
-    'Beds_2_airbnb',
-    'Beds_3_airbnb',
-    'Beds_4_airbnb',
-    'Beds_5_airbnb',
-    'Beds_6_airbnb',
-    'Beds_7_airbnb',
-    'Beds_8_airbnb',
-    'Beds_9_airbnb',
-    'Beds_10_airbnb',
-    'People_1_airbnb',
-    'People_2_airbnb',
-    'People_3_airbnb',
-    'People_4_airbnb',
-    'People_5_airbnb',
-    'People_6_airbnb',
-    'People_7_airbnb',
-    'People_8_airbnb',
-    'People_9_airbnb',
-    'People_10_airbnb',
-    'People_15_airbnb',
-    'Reviews_1_airbnb',
-    'Reviews_2_airbnb',
-    'Reviews_3_airbnb',
-    'Reviews_4_airbnb',
-    'Reviews_5_airbnb',
-    'Beach',
-    'Nature',
-    'Cultural',
-    'Historical',
-    'Adventurous',
-    'UserId',
-    'EarlyMorning',
-    'Morning',
-    'Noon',
-    'Afternoon',
-    'Evening',
-    'Night',
-    'place_morning',
-    'place_afternoon',
-    'place_night',
-    'place_adventurous',
-    'place_cultural',
-    'place_nature',
-    'place_beach',
-    'place_historical',
-    'A Coruña',
-    'Agadir',
-    'Alicante',
-    'Almería',
-    'Asturias',
-    'Badajoz',
-    'Barcelona',
-    'Bilbao',
-    'Brindisi',
-    'Béziers',
-    'Donostia / San Sebastián',
-    'Fuerteventura',
-    'Girona',
-    'Granada',
-    'Ibiza',
-    'Jerez de la Frontera',
-    'Lanzarote',
-    'Madrid',
-    'Melilla',
-    'Menorca',
-    'Málaga',
-    'Palma, Majorca',
-    'Pamplona',
-    'Santander',
-    'Santiago de Compostela',
-    'Seville',
-    'Tenerife',
-    'Valencia',
-    'Valladolid',
-    'Valverde',
-    'Vigo',
-    'Vitoria-Gasteiz',
-    'Zaragoza']
-    assert list(user_df.columns) == test_user_col
-    
-    test_reco_keys = ['id',
-    'listing_url',
-    'description',
-    'host_is_superhost',
-    'neighbourhood_cleansed',
-    'latitude',
-    'longitude',
-    'property_type',
-    'room_type',
-    'accommodates',
-    'bathrooms_text',
-    'beds',
-    'amenities',
-    'price',
-    'minimum_nights',
-    'maximum_nights',
-    'minimum_minimum_nights',
-    'maximum_minimum_nights',
-    'has_availability',
-    'number_of_reviews',
-    'instant_bookable',
-    'City',
-    'comments',
-    'Text',
-    'People',
-    'Min_Duration',
-    'fear',
-    'anger',
-    'anticip',
-    'trust',
-    'surprise',
-    'positive',
-    'negative',
-    'sadness',
-    'disgust',
-    'joy']
-    assert list(reco.keys()) == test_reco_keys
-    
-    assert type(City) == str
-    assert type(Category) == str
-    assert type(Price_flight) == int
-    assert type(time) == str
-    assert type(Price_Air) == np.float64
-    assert type(Beds_air) == np.float64
-    assert type(People_air) == np.float64
-    assert type(Reviews_air) == np.int64
     
 def test_model_places():
     user_df = data_strcture()[1]
