@@ -18,6 +18,16 @@ from Flights import flights_dataset
 
 
 def model_computations():
+    '''
+    Performs text cleaning and computes TF-IDF and cosine similarity for the flights dataset.
+
+    Returns:
+    - titles: a pandas Series containing the cleaned text of the flights dataset
+    - indices: a pandas Series mapping titles to their corresponding indices
+    - cosine_sim: a 2D numpy array representing the cosine similarity matrix
+    - df: a pandas DataFrame containing the flights dataset
+    '''
+
     def clean_text(text):
         text = "".join([word.lower() for word in text if word not in string.punctuation])
         tokens = re.findall('\S+', text)
@@ -43,6 +53,25 @@ def model_computations():
 
 
 def flights_reco(location,previous,best,titles,indices, cosine_sim, df):
+    """
+    Recommends flights from the given location to the best destination.
+
+    Args:
+        location (str): The departure location.
+        previous (str): The previous destination.
+        best (str): The best destination.
+        titles (pd.Series): A Pandas Series object containing the titles of the flights.
+        indices (pd.Series): A Pandas Series object containing the indices of the flights.
+        cosine_sim (numpy.ndarray): A NumPy array containing the cosine similarity between the flights.
+        df (pandas.DataFrame): A Pandas DataFrame object containing the flights data.
+
+    Returns:
+        filtered_df (pandas.DataFrame): A Pandas DataFrame object containing the recommended flights.
+
+    Raises:
+        KeyError: If the best destination is not found in the flights data.
+    """
+
     title = df.loc[df['flyTo'] == best, 'Description'].iloc[0]
     idx = indices[title]  # Defining a variable with indices
     sim_scores = list(enumerate(cosine_sim[idx]))

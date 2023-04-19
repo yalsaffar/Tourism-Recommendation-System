@@ -1,0 +1,17 @@
+lib/datasets/cosine_sim.npy
+lib/models/.ipynb_checkpoints
+lib/models/__pycache__
+lib/datasets/reviews.csv
+lib/datasets/.ipynb_checkpoints
+lib/datasets/__pycache__
+lib/datasets/airbnb.ipynb
+lib/datasets/flighty.ipynb
+lib/datasets/data_files/cosine_sim.npy
+lib/datasets/data_files/reviews.csv
+lib/datasets/data_files/reviews_mad.csv
+lib/datasets/data_files/reviews_mallo.csv
+lib/datasets/data_files/spain_df.csv
+lib/datasets/data_files/reviews_sev.csv
+lib/datasets/data_files/reviews_bar.csv
+lib/datasets/data_files/cosine_sim_air.npy
+lib/datasets/Places_data__.py

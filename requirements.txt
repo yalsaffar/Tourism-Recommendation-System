@@ -1,0 +1,11 @@
+Flask==2.2.2
+flask_socketio==5.3.3
+gradio==3.27.0
+langdetect==1.0.9
+nltk==3.8.1
+NRCLex==3.0.0
+numpy==1.21.5
+pandas==1.5.3
+scikit_learn==1.2.2
+setuptools==59.6.0
+pytest ==7.3.1
