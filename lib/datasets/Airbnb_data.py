@@ -40,20 +40,20 @@ def Airbnb_data():
                 of reviews, along with additional columns for emotion frequencies and price.
     """
 
-    listing_df_madrid = pd.read_csv("../datasets/data_files/listings_mad.csv")
-    review_df_madrid = pd.read_csv("../datasets/data_files/reviews_mad.csv")
-    listing_df_barcelona = pd.read_csv("../datasets/data_files/listings_bar.csv")
-    review_df_barcelona = pd.read_csv("../datasets/data_files/reviews_bar.csv")
-    listing_df_girona = pd.read_csv("../datasets/data_files/listings_gir.csv")
-    review_df_girona = pd.read_csv("../datasets/data_files/reviews_gir.csv")
-    listing_df_malaga = pd.read_csv("../datasets/data_files/listings_mal.csv")
-    review_df_malaga = pd.read_csv("../datasets/data_files/reviews_mal.csv")
-    listing_df_mallorca = pd.read_csv("../datasets/data_files/listings_mallo.csv")
-    review_df_mallorca = pd.read_csv("../datasets/data_files/reviews_mallo.csv")
-    listing_df_menorca = pd.read_csv("../datasets/data_files/listings_meno.csv")
-    review_df_menorca = pd.read_csv("../datasets/data_files/reviews_meno.csv")
-    listing_df_sevilla = pd.read_csv("../datasets/data_files/listings_sev.csv")
-    review_df_sevilla = pd.read_csv("../datasets/data_files/reviews_sev.csv")
+    listing_df_madrid = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/listings_mad.csv")
+    review_df_madrid = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/reviews_mad.csv")
+    listing_df_barcelona = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/listings_bar.csv")
+    review_df_barcelona = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/reviews_bar.csv")
+    listing_df_girona = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/listings_gir.csv")
+    review_df_girona = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/reviews_gir.csv")
+    listing_df_malaga = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/listings_mal.csv")
+    review_df_malaga = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/reviews_mal.csv")
+    listing_df_mallorca = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/listings_mallo.csv")
+    review_df_mallorca = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/reviews_mallo.csv")
+    listing_df_menorca = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/listings_meno.csv")
+    review_df_menorca = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/reviews_meno.csv")
+    listing_df_sevilla = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/listings_sev.csv")
+    review_df_sevilla = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/reviews_sev.csv")
     cols_to_remove = ['bathrooms', 'calendar_updated', 'host_neighbourhood', 'host_about',
                   'neighbourhood', 'neighborhood_overview', 'host_location', 'review_scores_value',
                   'review_scores_location', 'review_scores_communication', 'review_scores_checkin',
