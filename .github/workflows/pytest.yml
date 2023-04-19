@@ -22,4 +22,4 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Pytest
-      run: pytest test_lib.py
+      run: pytest lib/test_lib.py
