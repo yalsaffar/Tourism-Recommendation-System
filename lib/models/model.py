@@ -10,6 +10,7 @@ from Ranges import Ranges
 import numpy as np
 import pandas as pd
 from Airbnb_reco import Airbnb_reco
+from Places_reco import Places_reco
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -18,7 +19,7 @@ warnings.filterwarnings("ignore")
 
 
 #titles,indices, cosine_sim, df = model_computations()
-def clf( user_df, pool_df,cosine_sim,location,previous='ALC'):
+def clf( UserId,user_df, pool_df,cosine_sim,location,previous='ALC'):
     #titles,indices, cosine_sim, df = model_computations()
     titles = pd.read_csv('../datasets/data_files/titles.csv')
     df = pd.read_csv('../datasets/data_files/df.csv')
@@ -26,6 +27,7 @@ def clf( user_df, pool_df,cosine_sim,location,previous='ALC'):
     titles = pd.Series(df2['Description'])
     indices = pd.Series(df2.index, index = df2['Description'])
     #cosine_sim = np.load('../datasets/data_files/cosine_sim.npy')
+    #user_df = user_df[user_df['UserId'] == UserId]
     
     #_, user_df, pool_df = data_strcture()
 
@@ -35,13 +37,13 @@ def clf( user_df, pool_df,cosine_sim,location,previous='ALC'):
         recos = flights_reco(location,previous,best,titles,indices, cosine_sim,df)
         return recos.head(50)
 
-    price_ranges, time_cols_dict, cities_dict = Ranges()
+    price_ranges, time_cols_dict, cities_dict, price_ranges_air, beds_ranges, people_ranges, reviews_ranges = Ranges()
     
 
     
     #print(user_df)
     #location = input()
-
+    location = cities_dict[location]
     city_names = list(set(df['cityTo'])) 
     city_counts = user_df.filter(items=city_names).sum().sort_values(ascending=False)
 
@@ -49,7 +51,10 @@ def clf( user_df, pool_df,cosine_sim,location,previous='ALC'):
     #second_highest_city = city_counts.index[1]
     #third_highest_city = city_counts.index[2]
 
-    price_max_col = user_df.filter(like='PriceLvl_').idxmax(axis=1)
+    price_max_col = user_df.filter(regex=r'^PriceLvl_(?!.*airbnb)').idxmax(axis=1)
+
+
+    #price_max_col = user_df.filter(like='PriceLvl_').idxmax(axis=1)
     activity_max_col = user_df.filter(['Beach', 'Nature', 'Cultural', 'Historical', 'Adventurous']).idxmax(axis=1)
     time_max_col = user_df.filter(['EarlyMorning', 'Morning', 'Noon', 'Afternoon', 'Evening', 'Night']).idxmax(axis=1)
     
@@ -66,9 +71,11 @@ def clf( user_df, pool_df,cosine_sim,location,previous='ALC'):
 
     reco_final = pd.concat([reco_filtered,reco_filtered2,reco_filtered3, reco_others,reco_others2,reco_others3])
     reco_final = reco_final.drop_duplicates(keep='first')
-    
+    cities = ['MAD','BCN','AGP','MAH','SVQ','GRO']
+    reco_final = reco_final[reco_final['flyTo'].isin(cities)]
+    #print(reco_final)
     previous = reco_final['flyTo'].iloc[0]
-    print("-------------------------------")
+    print("Flights Reco....")
     #print("Do you like this offer: (yes:1, no:0)")
     #indicator = input()
     #print( reco_final['cityTo'].iloc[0], reco_final['category'].iloc[0], reco_final['price'].iloc[0], str(reco_final['local_departure'].iloc[0]), indicator)
@@ -94,6 +101,8 @@ def Rent_Reco(location,previous,best_price,best_beds,best_People,best_reviews):
         
 def clf_Airbnb(UserId,user_df,pool_df,df,City,Price_flight,Category,time,prev = 50059918):
     price_ranges, time_cols_dict, cities_dict, price_ranges_air, beds_ranges, people_ranges, reviews_ranges = Ranges()
+    if City == 'Málaga':
+        City = 'Malaga'
     #City = 'Madrid' #inputed
     #prev = 50059918 # recursive
     #price_flight = 200 #inputed
@@ -111,7 +120,8 @@ def clf_Airbnb(UserId,user_df,pool_df,df,City,Price_flight,Category,time,prev = 
     best_people_air = mean(people_ranges[str(people_max_air)[5:-14]])
     best_reviews_air = mean(reviews_ranges[str(reviews_max_air)[5:-14]])
     # ---------------------------
-    print(City,prev, best_price_air,best_beds_air,best_people_air, best_reviews_air)
+    #print(City,prev, best_price_air,best_beds_air,best_people_air, best_reviews_air)
+    print("Airbnb Reco....")
 
     reco = Rent_Reco(City,prev, best_price_air,best_beds_air,best_people_air, best_reviews_air)
     #r = Airbnb_reco('Malaga',50059918,200,10,2,100,titles,indices, cosine_sim, df)
@@ -131,3 +141,45 @@ def clf_Airbnb(UserId,user_df,pool_df,df,City,Price_flight,Category,time,prev = 
     Reviews_air = reco['number_of_reviews'].iloc[0]
     
     return pool_df, user_df, reco.iloc[0], City, Category, Price_flight, time, Price_Air,Beds_air,People_air,Reviews_air
+def place_recommendation(user_df, user_id, prev_place_id, filtered_df):
+    #print(user_df['place_morning'])
+    #print(user_df.columns)
+    print("Places Reco....")
+
+
+    #print(user_df.filter(['place_morning', 'place_afternoon', 'place_night']))
+    time_max_col = user_df.filter(['place_morning', 'place_afternoon', 'place_night']).idxmax(axis=1)
+    category_max_col = user_df.filter(['place_historical', 'place_nature', 'place_cultural', 'place_adventurous', 'place_beach']).idxmax(axis=1)
+
+    preferred_time = str(time_max_col[user_id])
+    preferred_category = str(category_max_col[user_id])
+
+    df_filtered = filtered_df[(filtered_df['category'] == preferred_category) & (filtered_df['time_of_day'] == preferred_time)]
+
+    if prev_place_id is not None:
+        df_filtered = df_filtered[df_filtered['place_id'] != prev_place_id]
+
+    if not df_filtered.empty:
+        recommended_place = df_filtered.sample()
+        return recommended_place
+    else:
+        # If no place matches the preferred time and category, recommend a random place in the city
+        df_city = filtered_df
+        if prev_place_id is not None:
+            df_city = df_city[df_city['place_id'] != prev_place_id]
+        recommended_place = df_city.sample()
+        return recommended_place
+
+def clf_places(City,UserId,user_df,previous = 712):
+    if City == 'Málaga':
+        City = 'Malaga'
+    #places_titles = pd.read_csv('../datasets/data_files/Titles_Places.csv')
+    #places_indices = pd.read_csv('../datasets/data_files/Indices_Places.csv')
+    places_cosine_sim = np.load('../datasets/data_files/Cosine_Similarity_Places.npy')
+    places_df = pd.read_csv('../datasets/data_files/places_activities_spain_final.csv')
+    recos = Places_reco(City, places_cosine_sim, places_df, previous)
+    recommended_place = place_recommendation(user_df, UserId, previous, recos)
+    recommended_place = recommended_place.reset_index()
+    return recommended_place, recommended_place['category'][0],recommended_place['time_of_day'][0]
+#['category'][1]
+
