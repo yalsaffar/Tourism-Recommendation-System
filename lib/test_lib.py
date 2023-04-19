@@ -5,8 +5,8 @@ import numpy as np
 
 ## System path
 
-sys.path.append('lib/datasets')
-sys.path.append('lib/models')
+sys.path.append('../datasets')
+sys.path.append('../models')
 
 ## /datasets imports
 
