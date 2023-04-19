@@ -35,6 +35,3 @@ def record(UserId , City, Category, Price_flight,Price_Air,Beds_air,People_air,R
 
     user_df.to_csv('../datasets/data_files/user_df.csv',index=False)
     pool_df.to_csv('../datasets/data_files/pool_df.csv',index=False)
-
-    
-
