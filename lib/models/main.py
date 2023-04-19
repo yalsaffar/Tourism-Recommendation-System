@@ -16,14 +16,6 @@ def main(UserId,location):
     pool_df, user_df, Reco_2, City, Category, Price_flight, time, Price_Air,Beds_air,People_air,Reviews_air = clf_Airbnb(UserId,user_df,pool_df,df_air,City,Price_flight,Category,time,prev = 50059918)
     
     Reco_3,Category_place,Time_place = clf_places(City,UserId,user_df,previous = 712)
-    
-    
-    
-    #pool_df, updated_user_df = users(UserId ,df_air, user_df, pool_df, City, Category, Price_flight,Price_Air,Beds_air,People_air,Reviews_air, time, int(indicator))
-    #user_df = updated_user_df.copy()
-
-    #user_df.to_csv('../datasets/data_files/user_df.csv',index=False)
-    #pool_df.to_csv('../datasets/data_files/pool_df.csv',index=False)
 
     return Reco_1, Reco_2, Reco_3,UserId , City, Category, Price_flight,Price_Air,Beds_air,People_air,Reviews_air, Category_place,Time_place, time, pool_df, user_df
 

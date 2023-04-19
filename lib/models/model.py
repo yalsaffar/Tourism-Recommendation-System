@@ -41,20 +41,15 @@ def clf( UserId,user_df, pool_df,cosine_sim,location,previous='ALC'):
     
 
     
-    #print(user_df)
-    #location = input()
     location = cities_dict[location]
     city_names = list(set(df['cityTo'])) 
     city_counts = user_df.filter(items=city_names).sum().sort_values(ascending=False)
 
     highest_city = city_counts.index[0]
-    #second_highest_city = city_counts.index[1]
-    #third_highest_city = city_counts.index[2]
 
     price_max_col = user_df.filter(regex=r'^PriceLvl_(?!.*airbnb)').idxmax(axis=1)
 
 
-    #price_max_col = user_df.filter(like='PriceLvl_').idxmax(axis=1)
     activity_max_col = user_df.filter(['Beach', 'Nature', 'Cultural', 'Historical', 'Adventurous']).idxmax(axis=1)
     time_max_col = user_df.filter(['EarlyMorning', 'Morning', 'Noon', 'Afternoon', 'Evening', 'Night']).idxmax(axis=1)
     
