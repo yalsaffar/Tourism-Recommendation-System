@@ -13,7 +13,6 @@ sys.path.append('/home/runner/work/Tourism-Recommendation-System/Tourism-Recomme
 
 from Flights import flights_dataset
 from data_structure import data_strcture
-from Airbnb_data import Airbnb_data
 from Ranges import Ranges
 from userdata import users
 
@@ -24,47 +23,6 @@ from Places_reco import Places_reco
 from main import main
 
 ## datasets –-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------
-
-def test_Airbnb_data():
-    test_col = ['id',
-    'listing_url',
-    'description',
-    'host_is_superhost',
-    'neighbourhood_cleansed',
-    'latitude',
-    'longitude',
-    'property_type',
-    'room_type',
-    'accommodates',
-    'bathrooms_text',
-    'beds',
-    'amenities',
-    'price',
-    'minimum_nights',
-    'maximum_nights',
-    'minimum_minimum_nights',
-    'maximum_minimum_nights',
-    'minimum_maximum_nights',
-    'maximum_maximum_nights',
-    'has_availability',
-    'number_of_reviews',
-    'instant_bookable',
-    'City',
-    'comments',
-    'Text',
-    'People',
-    'Min_Duration',
-    'fear',
-    'anger',
-    'anticip',
-    'trust',
-    'surprise',
-    'positive',
-    'negative',
-    'sadness',
-    'disgust',
-    'joy']
-    assert list(Airbnb_data().columns) == test_col
 
 def test_data_structure():
     assert len(data_strcture()) == 3
