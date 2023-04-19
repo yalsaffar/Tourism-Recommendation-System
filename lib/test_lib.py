@@ -417,7 +417,7 @@ def test_Ranges():
     assert Ranges()[6] == reviews_ranges
  
 def test_user_data():
-    df = pd.read_csv('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/Flights.csv')
+    df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/Flights.csv')
     user_df = data_strcture()[1]
     pool_df = data_strcture()[0]
     city = 'Madrid'
@@ -547,10 +547,10 @@ def test_user_data():
 ## models –-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------–-
     
 def test_flights_reco():
-    df = pd.read_csv('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/df.csv').reset_index()
+    df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/df.csv').reset_index()
     titles = pd.Series(df['Description'])
     indices = pd.Series(df.index, index = df['Description'])
-    cosine_sim = np.load('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim.npy')
+    cosine_sim = np.load('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim.npy')
     
     reco = flights_reco('TIA','ALC','ALC',titles,indices,cosine_sim,df)
     reco_col = ['index', 'flyFrom', 'flyTo', 'price', 'cityFrom', 'cityTo',
@@ -573,8 +573,8 @@ def test_model_clf():
     assert type(time) == str
     
 def test_model_air():
-    cosine_sim = np.load('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim_air.npy')
-    df = pd.read_csv('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/Flights.csv')
+    cosine_sim = np.load('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim_air.npy')
+    df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/Flights.csv')
     user_df = data_strcture()[1]
     pool_df = data_strcture()[0]
     pool_df, user_df, reco, City, Category, Price_flight, time, Price_Air,Beds_air,People_air,Reviews_air = clf_Airbnb(0, user_df, pool_df, df, 'Madrid', 200, 'Historical', '2023-04-15 14:30:45')
