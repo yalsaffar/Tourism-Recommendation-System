@@ -2,24 +2,28 @@ import sys
 import os
 import pandas as pd
 import numpy as np
+
+## System path
+
 os.chdir('../lib')
-sys.path.append('../lib/datasets')
-sys.path.append('../lib/models')
-## /datasets imports
+sys.path.append('../datasets')
+sys.path.append('../models')
+
+## /datasets modules
+
 from Flights import flights_dataset
 from Airbnb_data import Airbnb_data
 from data_structure import data_strcture
 from Ranges import Ranges
 from userdata import users
-## /models imports
+
+## /models modules
+
 from Airbnb_reco import Airbnb_reco
 from flights import flights_reco
-from model import clf, clf_Airbnb
+from model import clf, clf_Airbnb, clf_places
 from Places_reco import Places_reco
-
-
-
-# Library
+from main import main
 
 ## datasets –-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------–-----------
 
@@ -134,6 +138,14 @@ def test_data_structure():
     'Afternoon',
     'Evening',
     'Night',
+    'place_morning',
+    'place_afternoon',
+    'place_night',
+    'place_adventurous',
+    'place_cultural',
+    'place_nature',
+    'place_beach',
+    'place_historical',
     'A Coruña',
     'Agadir',
     'Alicante',
@@ -168,7 +180,6 @@ def test_data_structure():
     'Vitoria-Gasteiz',
     'Zaragoza']
     assert list(data_strcture()[1].columns) == test_user_col
-    assert len(data_strcture()[1].columns) == 96
         
     test_pool_col = ['inptCity',
     'inptTime',
@@ -270,10 +281,17 @@ def test_data_structure():
     'Valverde',
     'Vigo',
     'Vitoria-Gasteiz',
-    'Zaragoza']
+    'Zaragoza',
+    'place_morning',
+    'place_afternoon',
+    'place_night',
+    'place_adventurous',
+    'place_cultural',
+    'place_nature',
+    'place_beach',
+    'place_historical']
     assert list(data_strcture()[2].columns) == test_pool_col
     assert len(data_strcture()[2]) == 1
-    assert len(data_strcture()[2].columns) == 101
     
 def test_Flights_data():
     test_col = ['flyFrom',
@@ -287,9 +305,6 @@ def test_Flights_data():
     'local_departure',
     'category']
     assert list(flights_dataset().columns) == test_col
-
-def test_Places_data():
-    assert 1 == 1
 
 def test_Ranges():
     assert len(Ranges()) == 7
@@ -414,37 +429,118 @@ def test_user_data():
     reviews_airbnb = 100
     time = '2023-04-15 14:30:45'
     indicator = 0
-    records, data_temp = users(0, df, user_df, pool_df, city, cat, price, price_airbnb, beds_airbnb, people_airbnb, reviews_airbnb, time, indicator)
-    
+    records, data_temp = users(0, df, user_df, pool_df, city, cat, price, price_airbnb, beds_airbnb, people_airbnb, reviews_airbnb, 'Historical', 'Morning', time, indicator)    
     test_records_col = ['flyFrom', 'flyTo', 'price', 'cityFrom', 'cityTo', 'countryFrom',
        'distance', 'duration', 'local_departure', 'category', 'inptTime',
-       'inptCat', 'inptPrice', 'inptCity', 'Label']
+       'inptCat', 'inptPrice', 'inptCity', 'inptPriceAir', 'inptBedsAir',
+       'inptPeopleAir', 'inptReviewsAir', 'inptPlaceCat', 'inptPlaceTime',
+       'Label']
     assert list(records.columns) == test_records_col
     
-    test_data_temp_col = ['PriceLvl_1', 'PriceLvl_2', 'PriceLvl_3', 'PriceLvl_4', 'PriceLvl_5',
-       'PriceLvl_6', 'PriceLvl_7', 'PriceLvl_8', 'PriceLvl_9', 'PriceLvl_10',
-       'PriceLvl_15', 'PriceLvl_20', 'PriceLvl_30', 'PriceLvl_40',
-       'PriceLvl_1_airbnb', 'PriceLvl_2_airbnb', 'PriceLvl_3_airbnb',
-       'PriceLvl_4_airbnb', 'PriceLvl_5_airbnb', 'PriceLvl_6_airbnb',
-       'PriceLvl_7_airbnb', 'PriceLvl_8_airbnb', 'PriceLvl_9_airbnb',
-       'PriceLvl_10_airbnb', 'PriceLvl_15_airbnb', 'Beds_1_airbnb',
-       'Beds_2_airbnb', 'Beds_3_airbnb', 'Beds_4_airbnb', 'Beds_5_airbnb',
-       'Beds_6_airbnb', 'Beds_7_airbnb', 'Beds_8_airbnb', 'Beds_9_airbnb',
-       'Beds_10_airbnb', 'People_1_airbnb', 'People_2_airbnb',
-       'People_3_airbnb', 'People_4_airbnb', 'People_5_airbnb',
-       'People_6_airbnb', 'People_7_airbnb', 'People_8_airbnb',
-       'People_9_airbnb', 'People_10_airbnb', 'People_15_airbnb',
-       'Reviews_1_airbnb', 'Reviews_2_airbnb', 'Reviews_3_airbnb',
-       'Reviews_4_airbnb', 'Reviews_5_airbnb', 'Beach', 'Nature', 'Cultural',
-       'Historical', 'Adventurous', 'UserId', 'EarlyMorning', 'Morning',
-       'Noon', 'Afternoon', 'Evening', 'Night', 'A Coruña', 'Agadir',
-       'Alicante', 'Almería', 'Asturias', 'Badajoz', 'Barcelona', 'Bilbao',
-       'Brindisi', 'Béziers', 'Donostia / San Sebastián', 'Fuerteventura',
-       'Girona', 'Granada', 'Ibiza', 'Jerez de la Frontera', 'Lanzarote',
-       'Madrid', 'Melilla', 'Menorca', 'Málaga', 'Palma, Majorca', 'Pamplona',
-       'Santander', 'Santiago de Compostela', 'Seville', 'Tenerife',
-       'Valencia', 'Valladolid', 'Valverde', 'Vigo', 'Vitoria-Gasteiz',
-       'Zaragoza']
+    test_data_temp_col =['PriceLvl_1',
+    'PriceLvl_2',
+    'PriceLvl_3',
+    'PriceLvl_4',
+    'PriceLvl_5',
+    'PriceLvl_6',
+    'PriceLvl_7',
+    'PriceLvl_8',
+    'PriceLvl_9',
+    'PriceLvl_10',
+    'PriceLvl_15',
+    'PriceLvl_20',
+    'PriceLvl_30',
+    'PriceLvl_40',
+    'PriceLvl_1_airbnb',
+    'PriceLvl_2_airbnb',
+    'PriceLvl_3_airbnb',
+    'PriceLvl_4_airbnb',
+    'PriceLvl_5_airbnb',
+    'PriceLvl_6_airbnb',
+    'PriceLvl_7_airbnb',
+    'PriceLvl_8_airbnb',
+    'PriceLvl_9_airbnb',
+    'PriceLvl_10_airbnb',
+    'PriceLvl_15_airbnb',
+    'Beds_1_airbnb',
+    'Beds_2_airbnb',
+    'Beds_3_airbnb',
+    'Beds_4_airbnb',
+    'Beds_5_airbnb',
+    'Beds_6_airbnb',
+    'Beds_7_airbnb',
+    'Beds_8_airbnb',
+    'Beds_9_airbnb',
+    'Beds_10_airbnb',
+    'People_1_airbnb',
+    'People_2_airbnb',
+    'People_3_airbnb',
+    'People_4_airbnb',
+    'People_5_airbnb',
+    'People_6_airbnb',
+    'People_7_airbnb',
+    'People_8_airbnb',
+    'People_9_airbnb',
+    'People_10_airbnb',
+    'People_15_airbnb',
+    'Reviews_1_airbnb',
+    'Reviews_2_airbnb',
+    'Reviews_3_airbnb',
+    'Reviews_4_airbnb',
+    'Reviews_5_airbnb',
+    'Beach',
+    'Nature',
+    'Cultural',
+    'Historical',
+    'Adventurous',
+    'UserId',
+    'EarlyMorning',
+    'Morning',
+    'Noon',
+    'Afternoon',
+    'Evening',
+    'Night',
+    'place_morning',
+    'place_afternoon',
+    'place_night',
+    'place_adventurous',
+    'place_cultural',
+    'place_nature',
+    'place_beach',
+    'place_historical',
+    'A Coruña',
+    'Agadir',
+    'Alicante',
+    'Almería',
+    'Asturias',
+    'Badajoz',
+    'Barcelona',
+    'Bilbao',
+    'Brindisi',
+    'Béziers',
+    'Donostia / San Sebastián',
+    'Fuerteventura',
+    'Girona',
+    'Granada',
+    'Ibiza',
+    'Jerez de la Frontera',
+    'Lanzarote',
+    'Madrid',
+    'Melilla',
+    'Menorca',
+    'Málaga',
+    'Palma, Majorca',
+    'Pamplona',
+    'Santander',
+    'Santiago de Compostela',
+    'Seville',
+    'Tenerife',
+    'Valencia',
+    'Valladolid',
+    'Valverde',
+    'Vigo',
+    'Vitoria-Gasteiz',
+    'Zaragoza']
     assert list(data_temp.columns) == test_data_temp_col 
     
         
@@ -465,7 +561,7 @@ def test_flights_reco():
 def test_model_clf():
     cosine_sim = np.load('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/cosine_sim.npy')
     
-    reco, City, Category, Price_flight, time = clf(data_strcture()[1],data_strcture()[0],cosine_sim, 'INI')
+    reco, City, Category, Price_flight, time = clf(0, data_strcture()[1],data_strcture()[0],cosine_sim, 'Olbia')
     
     test_reco_keys = ['flyFrom', 'flyTo', 'price', 'cityFrom', 'cityTo', 'countryFrom',
        'distance', 'duration', 'local_departure', 'category', 'Description']
@@ -487,40 +583,148 @@ def test_model_air():
        'distance', 'duration', 'local_departure', 'category']
     assert list(pool_df.columns) == test_pool_col
     
-    test_user_col = ['PriceLvl_1', 'PriceLvl_2', 'PriceLvl_3', 'PriceLvl_4', 'PriceLvl_5',
-       'PriceLvl_6', 'PriceLvl_7', 'PriceLvl_8', 'PriceLvl_9', 'PriceLvl_10',
-       'PriceLvl_15', 'PriceLvl_20', 'PriceLvl_30', 'PriceLvl_40',
-       'PriceLvl_1_airbnb', 'PriceLvl_2_airbnb', 'PriceLvl_3_airbnb',
-       'PriceLvl_4_airbnb', 'PriceLvl_5_airbnb', 'PriceLvl_6_airbnb',
-       'PriceLvl_7_airbnb', 'PriceLvl_8_airbnb', 'PriceLvl_9_airbnb',
-       'PriceLvl_10_airbnb', 'PriceLvl_15_airbnb', 'Beds_1_airbnb',
-       'Beds_2_airbnb', 'Beds_3_airbnb', 'Beds_4_airbnb', 'Beds_5_airbnb',
-       'Beds_6_airbnb', 'Beds_7_airbnb', 'Beds_8_airbnb', 'Beds_9_airbnb',
-       'Beds_10_airbnb', 'People_1_airbnb', 'People_2_airbnb',
-       'People_3_airbnb', 'People_4_airbnb', 'People_5_airbnb',
-       'People_6_airbnb', 'People_7_airbnb', 'People_8_airbnb',
-       'People_9_airbnb', 'People_10_airbnb', 'People_15_airbnb',
-       'Reviews_1_airbnb', 'Reviews_2_airbnb', 'Reviews_3_airbnb',
-       'Reviews_4_airbnb', 'Reviews_5_airbnb', 'Beach', 'Nature', 'Cultural',
-       'Historical', 'Adventurous', 'UserId', 'EarlyMorning', 'Morning',
-       'Noon', 'Afternoon', 'Evening', 'Night', 'A Coruña', 'Agadir',
-       'Alicante', 'Almería', 'Asturias', 'Badajoz', 'Barcelona', 'Bilbao',
-       'Brindisi', 'Béziers', 'Donostia / San Sebastián', 'Fuerteventura',
-       'Girona', 'Granada', 'Ibiza', 'Jerez de la Frontera', 'Lanzarote',
-       'Madrid', 'Melilla', 'Menorca', 'Málaga', 'Palma, Majorca', 'Pamplona',
-       'Santander', 'Santiago de Compostela', 'Seville', 'Tenerife',
-       'Valencia', 'Valladolid', 'Valverde', 'Vigo', 'Vitoria-Gasteiz',
-       'Zaragoza']
+    test_user_col = ['PriceLvl_1',
+    'PriceLvl_2',
+    'PriceLvl_3',
+    'PriceLvl_4',
+    'PriceLvl_5',
+    'PriceLvl_6',
+    'PriceLvl_7',
+    'PriceLvl_8',
+    'PriceLvl_9',
+    'PriceLvl_10',
+    'PriceLvl_15',
+    'PriceLvl_20',
+    'PriceLvl_30',
+    'PriceLvl_40',
+    'PriceLvl_1_airbnb',
+    'PriceLvl_2_airbnb',
+    'PriceLvl_3_airbnb',
+    'PriceLvl_4_airbnb',
+    'PriceLvl_5_airbnb',
+    'PriceLvl_6_airbnb',
+    'PriceLvl_7_airbnb',
+    'PriceLvl_8_airbnb',
+    'PriceLvl_9_airbnb',
+    'PriceLvl_10_airbnb',
+    'PriceLvl_15_airbnb',
+    'Beds_1_airbnb',
+    'Beds_2_airbnb',
+    'Beds_3_airbnb',
+    'Beds_4_airbnb',
+    'Beds_5_airbnb',
+    'Beds_6_airbnb',
+    'Beds_7_airbnb',
+    'Beds_8_airbnb',
+    'Beds_9_airbnb',
+    'Beds_10_airbnb',
+    'People_1_airbnb',
+    'People_2_airbnb',
+    'People_3_airbnb',
+    'People_4_airbnb',
+    'People_5_airbnb',
+    'People_6_airbnb',
+    'People_7_airbnb',
+    'People_8_airbnb',
+    'People_9_airbnb',
+    'People_10_airbnb',
+    'People_15_airbnb',
+    'Reviews_1_airbnb',
+    'Reviews_2_airbnb',
+    'Reviews_3_airbnb',
+    'Reviews_4_airbnb',
+    'Reviews_5_airbnb',
+    'Beach',
+    'Nature',
+    'Cultural',
+    'Historical',
+    'Adventurous',
+    'UserId',
+    'EarlyMorning',
+    'Morning',
+    'Noon',
+    'Afternoon',
+    'Evening',
+    'Night',
+    'place_morning',
+    'place_afternoon',
+    'place_night',
+    'place_adventurous',
+    'place_cultural',
+    'place_nature',
+    'place_beach',
+    'place_historical',
+    'A Coruña',
+    'Agadir',
+    'Alicante',
+    'Almería',
+    'Asturias',
+    'Badajoz',
+    'Barcelona',
+    'Bilbao',
+    'Brindisi',
+    'Béziers',
+    'Donostia / San Sebastián',
+    'Fuerteventura',
+    'Girona',
+    'Granada',
+    'Ibiza',
+    'Jerez de la Frontera',
+    'Lanzarote',
+    'Madrid',
+    'Melilla',
+    'Menorca',
+    'Málaga',
+    'Palma, Majorca',
+    'Pamplona',
+    'Santander',
+    'Santiago de Compostela',
+    'Seville',
+    'Tenerife',
+    'Valencia',
+    'Valladolid',
+    'Valverde',
+    'Vigo',
+    'Vitoria-Gasteiz',
+    'Zaragoza']
     assert list(user_df.columns) == test_user_col
     
-    test_reco_keys = ['id', 'listing_url', 'description', 'host_is_superhost',
-       'neighbourhood_cleansed', 'latitude', 'longitude', 'property_type',
-       'room_type', 'accommodates', 'bathrooms_text', 'beds', 'amenities',
-       'price', 'minimum_nights', 'maximum_nights', 'minimum_minimum_nights',
-       'maximum_minimum_nights', 'has_availability', 'number_of_reviews',
-       'instant_bookable', 'City', 'comments', 'Text', 'People',
-       'Min_Duration', 'fear', 'anger', 'anticip', 'trust', 'surprise',
-       'positive', 'negative', 'sadness', 'disgust', 'joy'] 
+    test_reco_keys = ['id',
+    'listing_url',
+    'description',
+    'host_is_superhost',
+    'neighbourhood_cleansed',
+    'latitude',
+    'longitude',
+    'property_type',
+    'room_type',
+    'accommodates',
+    'bathrooms_text',
+    'beds',
+    'amenities',
+    'price',
+    'minimum_nights',
+    'maximum_nights',
+    'minimum_minimum_nights',
+    'maximum_minimum_nights',
+    'has_availability',
+    'number_of_reviews',
+    'instant_bookable',
+    'City',
+    'comments',
+    'Text',
+    'People',
+    'Min_Duration',
+    'fear',
+    'anger',
+    'anticip',
+    'trust',
+    'surprise',
+    'positive',
+    'negative',
+    'sadness',
+    'disgust',
+    'joy']
     assert list(reco.keys()) == test_reco_keys
     
     assert type(City) == str
@@ -532,6 +736,269 @@ def test_model_air():
     assert type(People_air) == np.float64
     assert type(Reviews_air) == np.int64
     
-def test_Places_reco():
-    assert 1 == 1
+def test_model_places():
+    user_df = data_strcture()[1]
+    reco_place, reco_place_cat, reco_place_time = clf_places('Madrid', 0, user_df)
     
+    reco_place_keys = ['index', 'place_id', 'place', 'city', 'text', 'category',
+       'time_of_day']
+    assert list(reco_place.keys()) == reco_place_keys
+    assert len(reco_place) == 1
+    assert type(reco_place_cat) == str
+    assert type(reco_place_time) == str
+    
+def test_main():
+    Reco_1, Reco_2, Reco_3,UserId , City, Category, Price_flight,Price_Air,Beds_air,People_air,Reviews_air, Category_place,Time_place, time, pool_df, user_df = main(0, 'Olbia')   
+    
+    reco_1_col = ['flyFrom', 'flyTo', 'price', 'cityFrom', 'cityTo', 'countryFrom',
+       'distance', 'duration', 'local_departure', 'category', 'Description']
+    assert list(Reco_1.keys()) == reco_1_col
+    
+    reco_2_col = ['id', 'listing_url', 'description', 'host_is_superhost',
+       'neighbourhood_cleansed', 'latitude', 'longitude', 'property_type',
+       'room_type', 'accommodates', 'bathrooms_text', 'beds', 'amenities',
+       'price', 'minimum_nights', 'maximum_nights', 'minimum_minimum_nights',
+       'maximum_minimum_nights', 'has_availability', 'number_of_reviews',
+       'instant_bookable', 'City', 'comments', 'Text', 'People',
+       'Min_Duration', 'fear', 'anger', 'anticip', 'trust', 'surprise',
+       'positive', 'negative', 'sadness', 'disgust', 'joy']
+    assert list(Reco_2.keys()) == reco_2_col
+    
+    reco_3_col = ['index', 'place_id', 'place', 'city', 'text', 'category',
+       'time_of_day']
+    assert list(Reco_3.keys()) == reco_3_col
+    
+    assert type(UserId) == int
+    assert type(City) == str
+    assert type(Category) == str
+    assert type(Price_flight) == np.int64
+    assert type(Price_Air) == np.float64
+    assert type(Beds_air) == np.float64
+    assert type(People_air) == np.float64
+    assert type(Reviews_air) == np.int64
+    assert type(Category_place) == str
+    assert type(Time_place) == str
+    assert type(time) == str
+
+    test_pool_col = ['inptCity',
+    'inptTime',
+    'inptCat',
+    'inptPrice',
+    'PriceLvl_1',
+    'PriceLvl_2',
+    'PriceLvl_3',
+    'PriceLvl_4',
+    'PriceLvl_5',
+    'PriceLvl_6',
+    'PriceLvl_7',
+    'PriceLvl_8',
+    'PriceLvl_9',
+    'PriceLvl_10',
+    'PriceLvl_15',
+    'PriceLvl_20',
+    'PriceLvl_30',
+    'PriceLvl_40',
+    'PriceLvl_1_airbnb',
+    'PriceLvl_2_airbnb',
+    'PriceLvl_3_airbnb',
+    'PriceLvl_4_airbnb',
+    'PriceLvl_5_airbnb',
+    'PriceLvl_6_airbnb',
+    'PriceLvl_7_airbnb',
+    'PriceLvl_8_airbnb',
+    'PriceLvl_9_airbnb',
+    'PriceLvl_10_airbnb',
+    'PriceLvl_15_airbnb',
+    'Beds_1_airbnb',
+    'Beds_2_airbnb',
+    'Beds_3_airbnb',
+    'Beds_4_airbnb',
+    'Beds_5_airbnb',
+    'Beds_6_airbnb',
+    'Beds_7_airbnb',
+    'Beds_8_airbnb',
+    'Beds_9_airbnb',
+    'Beds_10_airbnb',
+    'People_1_airbnb',
+    'People_2_airbnb',
+    'People_3_airbnb',
+    'People_4_airbnb',
+    'People_5_airbnb',
+    'People_6_airbnb',
+    'People_7_airbnb',
+    'People_8_airbnb',
+    'People_9_airbnb',
+    'People_10_airbnb',
+    'People_15_airbnb',
+    'Reviews_1_airbnb',
+    'Reviews_2_airbnb',
+    'Reviews_3_airbnb',
+    'Reviews_4_airbnb',
+    'Reviews_5_airbnb',
+    'Beach',
+    'Nature',
+    'Cultural',
+    'Historical',
+    'Adventurous',
+    'EarlyMorning',
+    'Morning',
+    'Noon',
+    'Afternoon',
+    'Evening',
+    'Night',
+    'Label',
+    'Click',
+    'A Coruña',
+    'Agadir',
+    'Alicante',
+    'Almería',
+    'Asturias',
+    'Badajoz',
+    'Barcelona',
+    'Bilbao',
+    'Brindisi',
+    'Béziers',
+    'Donostia / San Sebastián',
+    'Fuerteventura',
+    'Girona',
+    'Granada',
+    'Ibiza',
+    'Jerez de la Frontera',
+    'Lanzarote',
+    'Madrid',
+    'Melilla',
+    'Menorca',
+    'Málaga',
+    'Palma, Majorca',
+    'Pamplona',
+    'Santander',
+    'Santiago de Compostela',
+    'Seville',
+    'Tenerife',
+    'Valencia',
+    'Valladolid',
+    'Valverde',
+    'Vigo',
+    'Vitoria-Gasteiz',
+    'Zaragoza',
+    'place_morning',
+    'place_afternoon',
+    'place_night',
+    'place_adventurous',
+    'place_cultural',
+    'place_nature',
+    'place_beach',
+    'place_historical',
+    'inptPriceAir',
+    'inptBedsAir',
+    'inptPeopleAir',
+    'inptReviewsAir',
+    'inptPlaceCat',
+    'inptPlaceTime']
+    assert list(pool_df.columns) == test_pool_col
+    
+    test_user_col = ['PriceLvl_1',
+    'PriceLvl_2',
+    'PriceLvl_3',
+    'PriceLvl_4',
+    'PriceLvl_5',
+    'PriceLvl_6',
+    'PriceLvl_7',
+    'PriceLvl_8',
+    'PriceLvl_9',
+    'PriceLvl_10',
+    'PriceLvl_15',
+    'PriceLvl_20',
+    'PriceLvl_30',
+    'PriceLvl_40',
+    'PriceLvl_1_airbnb',
+    'PriceLvl_2_airbnb',
+    'PriceLvl_3_airbnb',
+    'PriceLvl_4_airbnb',
+    'PriceLvl_5_airbnb',
+    'PriceLvl_6_airbnb',
+    'PriceLvl_7_airbnb',
+    'PriceLvl_8_airbnb',
+    'PriceLvl_9_airbnb',
+    'PriceLvl_10_airbnb',
+    'PriceLvl_15_airbnb',
+    'Beds_1_airbnb',
+    'Beds_2_airbnb',
+    'Beds_3_airbnb',
+    'Beds_4_airbnb',
+    'Beds_5_airbnb',
+    'Beds_6_airbnb',
+    'Beds_7_airbnb',
+    'Beds_8_airbnb',
+    'Beds_9_airbnb',
+    'Beds_10_airbnb',
+    'People_1_airbnb',
+    'People_2_airbnb',
+    'People_3_airbnb',
+    'People_4_airbnb',
+    'People_5_airbnb',
+    'People_6_airbnb',
+    'People_7_airbnb',
+    'People_8_airbnb',
+    'People_9_airbnb',
+    'People_10_airbnb',
+    'People_15_airbnb',
+    'Reviews_1_airbnb',
+    'Reviews_2_airbnb',
+    'Reviews_3_airbnb',
+    'Reviews_4_airbnb',
+    'Reviews_5_airbnb',
+    'Beach',
+    'Nature',
+    'Cultural',
+    'Historical',
+    'Adventurous',
+    'UserId',
+    'EarlyMorning',
+    'Morning',
+    'Noon',
+    'Afternoon',
+    'Evening',
+    'Night',
+    'place_morning',
+    'place_afternoon',
+    'place_night',
+    'place_adventurous',
+    'place_cultural',
+    'place_nature',
+    'place_beach',
+    'place_historical',
+    'A Coruña',
+    'Agadir',
+    'Alicante',
+    'Almería',
+    'Asturias',
+    'Badajoz',
+    'Barcelona',
+    'Bilbao',
+    'Brindisi',
+    'Béziers',
+    'Donostia / San Sebastián',
+    'Fuerteventura',
+    'Girona',
+    'Granada',
+    'Ibiza',
+    'Jerez de la Frontera',
+    'Lanzarote',
+    'Madrid',
+    'Melilla',
+    'Menorca',
+    'Málaga',
+    'Palma, Majorca',
+    'Pamplona',
+    'Santander',
+    'Santiago de Compostela',
+    'Seville',
+    'Tenerife',
+    'Valencia',
+    'Valladolid',
+    'Valverde',
+    'Vigo',
+    'Vitoria-Gasteiz',
+    'Zaragoza']
+    assert list(user_df.columns) == test_user_col
