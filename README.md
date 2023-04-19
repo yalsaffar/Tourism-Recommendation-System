@@ -66,3 +66,6 @@ Link to google drive for two .npy files which includes the cosine similarities a
 https://drive.google.com/file/d/1GmjODU2qadh0xjvw4q-U2W2et4m6h5Lo/view?usp=sharing
 
 https://drive.google.com/file/d/1GHiUXZbuEw_4tH04qU2opIaPnpdi4LCB/view?usp=sharing
+
+Link to the google drive for large data files that should be in data_files folder:
+https://drive.google.com/drive/folders/17590S3_hFGSbgloRXh-uGs6CNQbKDDXa
