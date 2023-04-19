@@ -49,7 +49,7 @@ def Airbnb_reco(location,previous,best_price,best_beds,best_People,best_reviews,
     # location is the most liked city
     #print(df)
     title = df.loc[(df['price'] >= best_price - 150) & (df['price'] <= best_price + 150) & (df['beds'] >= best_beds - 2) & (df['beds'] <= best_beds + 2)&(df['People'] >= best_People - 1.5) & (df['People'] <= best_People + 1.5)&(df['number_of_reviews'] >= best_reviews - 150) & (df['number_of_reviews'] <= best_reviews + 150), 'Text'].iloc[0]
-    print(title)
+    #print(title)
     idx = indices[title]  # Defining a variable with indices
     #print(idx)
     #print('-------')
@@ -78,9 +78,9 @@ def Airbnb_reco(location,previous,best_price,best_beds,best_People,best_reviews,
     #print(len(filtered_df))
 
     filtered_df = filtered_df[filtered_df['City']== location]
-    print('----------')
-    print(len(filtered_df))
-    print('----------')
+    #print('----------')
+   # print(len(filtered_df))
+    #print('----------')
 
     filtered_df = filtered_df[filtered_df['id'] != previous]
     

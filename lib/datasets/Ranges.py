@@ -100,4 +100,6 @@ def Ranges():
     reviews_ranges = {'Reviews_1_airbnb': [0, 200], 'Reviews_2_airbnb': [200, 400], 'Reviews_3_airbnb': [400, 600], 
                     'Reviews_4_airbnb': [600, 800], 'Reviews_5_airbnb': [800, 1000]}
 
+
+
     return price_ranges, time_cols_dict, cities_dict, price_ranges_air, beds_ranges, people_ranges, reviews_ranges

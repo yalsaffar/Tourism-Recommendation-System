@@ -160,6 +160,13 @@ def data_strcture():
     user_df['Afternoon'] = np.nan
     user_df['Evening'] = np.nan
     user_df['Night'] = np.nan
+
+    #----------------
+    new_columns_places = ['place_morning', 'place_afternoon', 'place_night' ,'place_adventurous', 'place_cultural', 'place_nature', 'place_beach', 'place_historical']
+    for column in new_columns_places:
+        user_df[column] = 0
+        pool_df[column] = 0
+
     dummy_df = pd.get_dummies(df['cityTo'])
     x = dummy_df.columns
     for y in x:

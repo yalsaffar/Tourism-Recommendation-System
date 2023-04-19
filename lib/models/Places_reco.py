@@ -11,13 +11,10 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_recall_fscore_support as score
 from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
 
-
 from Places_data import Places_data
 # This should has a Text column that has all text we need
 # id which has the placce id
 # city of that place should be there
-
-
 
 def model_computations():
     def clean_text(text):
@@ -27,9 +24,10 @@ def model_computations():
         text = [wn.lemmatize(word) for word in tokens if word not in stopwords.words('english')]
         return text
     df = Places_data()
+    df = df.rename(columns={'text': 'Text'})
     ps = nltk.PorterStemmer()
     wn = nltk.WordNetLemmatizer()   
-    df['Text'] = df.Description.apply(lambda x: clean_text(x))
+    df['Text'] = df['Text'].apply(lambda x: clean_text(x))
     df['Text'] = df['Text'].apply(lambda x: ' '.join(x))
 
 
@@ -43,24 +41,24 @@ def model_computations():
 
 
 
+def Places_reco(city, cosine_sim, place_df, previous_place_id):
+    if previous_place_id not in place_df['place_id'].values:
+        raise ValueError(f"Invalid previous_place_id: {previous_place_id}")
 
-def Places_reco(location,previous,best,titles,indices, cosine_sim, df):
-    # best is previous best id of place
-    # location is the most liked city
-    title = df.loc[df['id'] == best, 'Text'].iloc[0]
-    idx = indices[title]  # Defining a variable with indices
+    if previous_place_id != 0:
+        idx = place_df.index.get_loc(place_df[place_df['place_id'] == previous_place_id].index[0])
+    else:
+        idx = place_df.index.get_loc(place_df[place_df['city'] == city].index[0])
+
     sim_scores = list(enumerate(cosine_sim[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1].all(), reverse=True)
-    sim_scores = sim_scores  # Taking the 30 most similar movies
-    movie_indices = [i[0] for i in sim_scores]
-    listy= list(titles.iloc[movie_indices][~titles.iloc[movie_indices].isin([title])]) # returns the title based on movie indices
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:]
 
-    #listy = list(get_recommendations(df.loc[df['flyTo'] == location, 'Description'].iloc[0],titles,indices, cosine_sim))
+    place_indices = [i[0] for i in sim_scores]
+    filtered_df = place_df.iloc[place_indices]
+    filtered_df = filtered_df[filtered_df['city'] == city]
 
-    filtered_df = df[df['Text'].isin(listy)]
-    filtered_df = filtered_df[filtered_df['City']== location]
-    if previous != 0:
+    if previous_place_id != 0:
+        filtered_df = filtered_df[filtered_df['place_id'] != previous_place_id]
 
-        filtered_df = filtered_df[filtered_df['id'] != previous]
-    
     return filtered_df
