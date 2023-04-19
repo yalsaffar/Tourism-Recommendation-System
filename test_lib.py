@@ -9,7 +9,7 @@ os.chdir('../lib')
 sys.path.append('../datasets')
 sys.path.append('../models')
 
-## /datasets modules
+## /datasets imports
 
 from Flights import flights_dataset
 from Airbnb_data import Airbnb_data
@@ -17,7 +17,7 @@ from data_structure import data_strcture
 from Ranges import Ranges
 from userdata import users
 
-## /models modules
+## /models imports
 
 from Airbnb_reco import Airbnb_reco
 from flights import flights_reco
