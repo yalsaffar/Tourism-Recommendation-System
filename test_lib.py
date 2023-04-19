@@ -372,11 +372,34 @@ def test_Ranges():
     'Vitoria-Gasteiz': 'VIT',
     'Valverde': 'VDE',
     'Zaragoza': 'ZAZ',
-    'Santiago de Compostela': 'SCQ'}
+    'Santiago de Compostela': 'SCQ'
+    }
+    price_ranges_air = {'PriceLvl_1_airbnb': [0, 100], 'PriceLvl_2_airbnb': [100, 200], 'PriceLvl_3_airbnb': [200, 300], 
+                    'PriceLvl_4_airbnb': [300, 400], 'PriceLvl_5_airbnb': [400, 500], 'PriceLvl_6_airbnb': [500, 600], 
+                    'PriceLvl_7_airbnb': [600, 700], 'PriceLvl_8_airbnb': [700, 800], 'PriceLvl_9_airbnb': [800, 900], 
+                    'PriceLvl_10_airbnb': [900, 1000], 'PriceLvl_11_airbnb': [1000, 1100], 'PriceLvl_12_airbnb': [1100, 1200], 
+                    'PriceLvl_13_airbnb': [1200, 1300], 'PriceLvl_14_airbnb': [1300, 1400], 'PriceLvl_15_airbnb': [1400, 1500], 
+                    'PriceLvl_16_airbnb': [1500, 1600], 'PriceLvl_17_airbnb': [1600, 1700], 'PriceLvl_18_airbnb': [1700, 1800], 
+                    'PriceLvl_19_airbnb': [1800, 1900], 'PriceLvl_20_airbnb': [1900, 2000]}
+
+    beds_ranges = {'Beds_1_airbnb': [0, 1], 'Beds_2_airbnb': [1, 2], 'Beds_3_airbnb': [2, 3], 'Beds_4_airbnb': [3, 4], 
+                'Beds_5_airbnb': [4, 5], 'Beds_6_airbnb': [5, 6], 'Beds_7_airbnb': [6, 7], 'Beds_8_airbnb': [7, 8], 
+                'Beds_9_airbnb': [8, 9], 'Beds_10_airbnb': [9, 10]}
+
+    people_ranges = {'People_1_airbnb': [0, 1], 'People_2_airbnb': [1, 2], 'People_3_airbnb': [2, 3], 'People_4_airbnb': [3, 4], 
+                    'People_5_airbnb': [4, 5], 'People_6_airbnb': [5, 6], 'People_7_airbnb': [6, 7], 'People_8_airbnb': [7, 8], 
+                    'People_9_airbnb': [8, 9], 'People_10_airbnb': [9, 10]}
+
+    reviews_ranges = {'Reviews_1_airbnb': [0, 200], 'Reviews_2_airbnb': [200, 400], 'Reviews_3_airbnb': [400, 600], 
+                    'Reviews_4_airbnb': [600, 800], 'Reviews_5_airbnb': [800, 1000]}
 
     assert Ranges()[0] == price_ranges_values
     assert Ranges()[1] == time_ranges_values
     assert Ranges()[2] == cities_dict_values
+    assert Ranges()[3] == price_ranges_air
+    assert Ranges()[4] == beds_ranges
+    assert Ranges()[5] == people_ranges
+    assert Ranges()[6] == reviews_ranges
  
 def test_user_data():
     df = pd.read_csv('/Users/SaadDev/Tourism-Recommendation-System/lib/datasets/data_files/Flights.csv')
