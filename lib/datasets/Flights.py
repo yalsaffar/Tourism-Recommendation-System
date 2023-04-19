@@ -16,7 +16,7 @@ def flights_dataset():
     - Returns the preprocessed DataFrame
     """
 
-    df = pd.read_csv("../datasets/data_files/flights_data_002.csv")
+    df = pd.read_csv("/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/flights_data_002.csv")
     df = df.drop(['conversion'], axis=1)
     df['local_arrival'] = pd.to_datetime(df['local_arrival'])
     df['local_departure'] = pd.to_datetime(df['local_departure'])
