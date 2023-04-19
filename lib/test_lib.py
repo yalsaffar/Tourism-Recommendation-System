@@ -5,6 +5,7 @@ import numpy as np
 
 ## System path
 
+os.chdir('..')
 sys.path.append('../datasets')
 sys.path.append('../models')
 
