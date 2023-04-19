@@ -20,6 +20,21 @@ from Airbnb_data import Airbnb_data
 
 
 def model_computations(field):
+    """
+    Preprocesses Airbnb data for a given field using stemming, lemmatization, and TF-IDF vectorization.
+    Computes cosine similarity scores between all pairs of listings based on the given field.
+    
+    Args:
+        field (str): the name of the field to be used for computing similarity scores
+        
+    Returns:
+        titles (pd.Series): a pandas series containing the names of all listings
+        indices (pd.Series): a pandas series containing the indices of all listings
+        cosine_sim (numpy array): a 2D numpy array containing the cosine similarity scores between all pairs of listings
+        df (pandas dataframe): the original Airbnb data
+    """
+
+
     def clean_text(text):
         text = "".join([word.lower() for word in text if word not in string.punctuation])
         tokens = re.findall('\S+', text)
@@ -45,6 +60,25 @@ def model_computations(field):
 
 
 def Airbnb_reco(location,previous,best_price,best_beds,best_People,best_reviews,titles,indices, cosine_sim, df):
+    """
+    This function takes in several parameters and returns a filtered DataFrame of Airbnb listings that match certain criteria.
+
+    Parameters:
+    - location (str): The most liked city.
+    - previous (int): The  the previous best place.
+    - best_price (int): The best price found for the previous place.
+    - best_beds (int): The best number of beds found for the previous place.
+    - best_People (int): The best number of people accommodated found for the previous place.
+    - best_reviews (int): The best number of reviews found for the previous place.
+    - titles (pandas Series): A pandas Series containing the 'Text' column of the Airbnb DataFrame.
+    - indices (pandas Series): A pandas Series containing the indices of the Airbnb DataFrame.
+    - cosine_sim (numpy array): A numpy array containing cosine similarities between Airbnb listings.
+    - df (pandas DataFrame): A pandas DataFrame containing the Airbnb listings.
+
+    Returns:
+    - filtered_df (pandas DataFrame): A filtered pandas DataFrame containing Airbnb listings that match the given criteria.
+    """
+
     # best is previous best id of place
     # location is the most liked city
     #print(df)

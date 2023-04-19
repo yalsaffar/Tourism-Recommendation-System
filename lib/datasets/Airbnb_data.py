@@ -10,11 +10,36 @@ def is_english(comment):
         return False
 
 def analyze_emotions(comment):
-        emotion = NRCLex(comment)
-        #print('-')
-        return emotion.affect_frequencies
+    """
+    Analyzes the emotions expressed in a given comment and returns the affect frequencies.
+
+    Parameters:
+    comment (str): The comment to analyze.
+
+    Returns:
+    dict: A dictionary containing the frequencies of each affect in the comment. The keys are
+          the six basic emotions (anger, fear, anticipation, trust, surprise, sadness) and
+          valence (positive or negative), and the values are the frequencies of each affect in
+          the comment, normalized to a scale of 0 to 1.
+    """
+
+
+    emotion = NRCLex(comment)
+    #print('-')
+    return emotion.affect_frequencies
 
 def Airbnb_data():
+    """
+      Reads in Airbnb listing and review data for several cities in Spain, processes the data to remove unnecessary columns 
+      and filter for relevant listings and reviews, performs sentiment analysis on the reviews to extract emotional frequencies, 
+      and returns a cleaned and analyzed DataFrame containing information on the top 1500 listings in each city based on number 
+      of reviews, along with additional columns for emotion frequencies and price.
+
+      Returns:
+      DataFrame: A cleaned and analyzed DataFrame containing information on the top 1500 listings in each city based on number 
+                of reviews, along with additional columns for emotion frequencies and price.
+    """
+
     listing_df_madrid = pd.read_csv("../datasets/data_files/listings_mad.csv")
     review_df_madrid = pd.read_csv("../datasets/data_files/reviews_mad.csv")
     listing_df_barcelona = pd.read_csv("../datasets/data_files/listings_bar.csv")

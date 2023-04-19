@@ -4,6 +4,32 @@ import datetime
 #userid = 0
 import pandas as pd
 def users(userid ,df, user_df, pool_df, city, cat, price,price_airbnb,beds_airbnb,people_airbnb,reviews_airbnb,place_category, place_time, time, indicator):
+    """
+    Update the user and pool data based on the user's interaction with a property.
+
+    Args:
+        userid (int): The ID of the user.
+        df (pandas DataFrame): The data of the property the user interacted with.
+        user_df (pandas DataFrame): The user data.
+        pool_df (pandas DataFrame): The pool data.
+        city (str): The city of the property.
+        cat (str): The category of the property.
+        price (int): The price of the property.
+        price_airbnb (int): The price of similar properties on Airbnb.
+        beds_airbnb (int): The number of beds in similar properties on Airbnb.
+        people_airbnb (int): The maximum number of people that can stay in similar properties on Airbnb.
+        reviews_airbnb (int): The average number of reviews of similar properties on Airbnb.
+        place_category (str): The category of the place where the property is located.
+        place_time (str): The time period when the property is available.
+        time (str): The time when the user interacted with the property.
+        indicator (int): Whether the user liked (1) or disliked (0) the property.
+
+    Returns:
+        records (pandas DataFrame): The updated pool data.
+        data_temp (pandas DataFrame): The updated user data.
+    """
+
+    
     if city == 'Malaga':
         city = 'Málaga'
     #global userid 

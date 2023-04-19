@@ -20,6 +20,22 @@ warnings.filterwarnings("ignore")
 
 #titles,indices, cosine_sim, df = model_computations()
 def clf( UserId,user_df, pool_df,cosine_sim,location,previous='ALC'):
+    """
+    Takes in user preferences, user and pool dataframes, and precomputed cosine similarity matrix, and returns
+    a recommended flight.
+
+    Args:
+        UserId (int): ID of the user.
+        user_df (pandas.DataFrame): DataFrame containing user information and preferences.
+        pool_df (pandas.DataFrame): DataFrame containing information about flights in the pool.
+        cosine_sim (numpy.ndarray): Precomputed cosine similarity matrix.
+        location (str): Name of the city the user is interested in traveling to.
+        previous (str, optional): The previous location the user visited. Defaults to 'ALC'.
+
+    Returns:
+        pandas.DataFrame: The recommended flight.
+    """
+
     #titles,indices, cosine_sim, df = model_computations()
     titles = pd.read_csv('../datasets/data_files/titles.csv')
     df = pd.read_csv('../datasets/data_files/df.csv')
@@ -95,6 +111,24 @@ def Rent_Reco(location,previous,best_price,best_beds,best_People,best_reviews):
     return recos.head(50)
         
 def clf_Airbnb(UserId,user_df,pool_df,df,City,Price_flight,Category,time,prev = 50059918):
+    """
+    Given the user inputs, returns a list of recommended Airbnb rentals.
+
+    Args:
+        UserId (int): User identification number
+        user_df (pandas.DataFrame): User dataframe containing the user preferences
+        pool_df (pandas.DataFrame): Pool of recommended rentals
+        df (pandas.DataFrame): Airbnb dataframe containing the listings data
+        City (str): City for which the rentals are being recommended
+        Price_flight (float): Flight price for the city
+        Category (str): Category of activities preferred by the user
+        time (str): Time of flight departure
+        prev (int, optional): Index of previous city visited by the user. Defaults to 50059918.
+
+    Returns:
+        tuple: Returns a tuple containing the updated pool of recommended rentals, updated user dataframe, recommended rental, recommended city, recommended category, flight price, time of flight departure, price of recommended rental, number of beds of recommended rental, number of people accomodated in recommended rental, number of reviews of recommended rental
+    """
+
     price_ranges, time_cols_dict, cities_dict, price_ranges_air, beds_ranges, people_ranges, reviews_ranges = Ranges()
     if City == 'Málaga':
         City = 'Malaga'
@@ -137,6 +171,19 @@ def clf_Airbnb(UserId,user_df,pool_df,df,City,Price_flight,Category,time,prev = 
     
     return pool_df, user_df, reco.iloc[0], City, Category, Price_flight, time, Price_Air,Beds_air,People_air,Reviews_air
 def place_recommendation(user_df, user_id, prev_place_id, filtered_df):
+    """
+    This function recommends a place to visit based on the user's preferences.
+
+    Parameters:
+    user_df (pandas.DataFrame): User DataFrame containing the user's preferences.
+    user_id (int): User ID for the user whose preferences we want to use.
+    prev_place_id (int or None): ID of the previously recommended place. If None, no previous recommendation exists.
+    filtered_df (pandas.DataFrame): DataFrame containing filtered places based on user's flights and Airbnb recommendations.
+
+    Returns:
+    pandas.DataFrame: DataFrame containing the recommended place.
+    """
+
     #print(user_df['place_morning'])
     #print(user_df.columns)
     print("Places Reco....")
@@ -166,6 +213,21 @@ def place_recommendation(user_df, user_id, prev_place_id, filtered_df):
         return recommended_place
 
 def clf_places(City,UserId,user_df,previous = 712):
+    """
+    Uses cosine similarity to recommend a place/activity based on user's preferred city.
+
+    Args:
+    - City (str): The name of the city for which the activity is recommended.
+    - UserId (int): The ID of the user for which the recommendation is made.
+    - user_df (pd.DataFrame): The DataFrame containing user preferences.
+    - previous (int): The ID of the previous recommended place/activity.
+
+    Returns:
+    - recommended_place (pd.Series): A pandas series containing information about the recommended place/activity.
+    - recommended_place['category'] (str): The category of the recommended place/activity.
+    - recommended_place['time_of_day'] (str): The time of day when the recommended place/activity is best suited.
+    """
+
     if City == 'Málaga':
         City = 'Malaga'
     #places_titles = pd.read_csv('../datasets/data_files/Titles_Places.csv')

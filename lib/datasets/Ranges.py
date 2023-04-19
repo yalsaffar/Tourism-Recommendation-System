@@ -1,5 +1,18 @@
 
 def Ranges():
+    """
+    Returns dictionaries with pre-defined ranges for various parameters used in the flights dataset analysis.
+
+    Returns:
+    price_ranges (dict): Dictionary with pre-defined price ranges.
+    time_cols_dict (dict): Dictionary with pre-defined time of day ranges.
+    cities_dict (dict): Dictionary mapping city names to their respective airport codes.
+    price_ranges_air (dict): Dictionary with pre-defined Airbnb price ranges.
+    beds_ranges (dict): Dictionary with pre-defined Airbnb bed count ranges.
+    people_ranges (dict): Dictionary with pre-defined Airbnb guest count ranges.
+    reviews_ranges (dict): Dictionary with pre-defined Airbnb review count ranges.
+    """
+
     price_ranges = {'PriceLvl_1': [0, 100], 'PriceLvl_2': [100, 200], 'PriceLvl_3': [200, 300], 'PriceLvl_4': [300, 400], 
                 'PriceLvl_5': [400, 500], 'PriceLvl_6': [500, 600], 'PriceLvl_7': [600, 700], 'PriceLvl_8': [700, 800], 
                 'PriceLvl_9': [800, 900], 'PriceLvl_10': [900, 1000], 'PriceLvl_15': [1000, 1500], 

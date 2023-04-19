@@ -2,6 +2,21 @@ import pandas as pd
 import numpy as np
 from Flights import flights_dataset
 def data_strcture():
+    """
+    Returns three dataframes: 
+    - `df`: a dataframe containing flight information 
+    - `user_df`: a dataframe containing user information and preferences 
+    - `pool_df`: a dataframe used to store recommended flights for each user 
+
+    The `df` dataframe is generated from the `flights_dataset()` function. The `user_df` 
+    dataframe has 1000 rows and contains columns for price levels, Airbnb price levels, 
+    number of beds, number of people, Airbnb reviews, and user preferences for various 
+    types of activities and times of day. The `pool_df` dataframe has one row and contains 
+    columns for flight information, price levels, Airbnb price levels, number of beds, 
+    number of people, Airbnb reviews, and user preferences for various types of activities 
+    and times of day.
+    """
+
     df = flights_dataset()
     pool_df = pd.DataFrame(index=range(1))
     pool_df['inptCity'] = np.nan

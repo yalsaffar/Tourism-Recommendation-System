@@ -17,6 +17,16 @@ from Places_data import Places_data
 # city of that place should be there
 
 def model_computations():
+    """
+    Preprocesses the text data and computes the cosine similarity matrix for the Airbnb places dataset.
+
+    Returns:
+    - titles: pd.Series containing the preprocessed text for each place
+    - indices: pd.Series containing the index of each place in the dataset
+    - cosine_sim: numpy array representing the cosine similarity matrix of the preprocessed text
+    - df: pd.DataFrame containing the preprocessed Airbnb dataset
+    """
+
     def clean_text(text):
         text = "".join([word.lower() for word in text if word not in string.punctuation])
         tokens = re.findall('\S+', text)
@@ -42,6 +52,22 @@ def model_computations():
 
 
 def Places_reco(city, cosine_sim, place_df, previous_place_id):
+    """
+    Recommends places in a given city based on the similarity of their attributes to the previous recommended place.
+    
+    Args:
+    city (str): The name of the city for which recommendations are requested.
+    cosine_sim (numpy.ndarray): The cosine similarity matrix of the place dataset.
+    place_df (pandas.DataFrame): The dataset of places containing their attributes.
+    previous_place_id (int): The ID of the previously recommended place.
+    
+    Returns:
+    pandas.DataFrame: A filtered dataset of recommended places in the specified city based on the similarity of their attributes to the previous recommended place.
+    
+    Raises:
+    ValueError: If the previous_place_id is not found in the dataset.
+    """
+
     if previous_place_id not in place_df['place_id'].values:
         raise ValueError(f"Invalid previous_place_id: {previous_place_id}")
 

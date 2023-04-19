@@ -2,6 +2,20 @@ import pandas as pd
 
 
 def flights_dataset():
+    """
+    This function loads a flights dataset from a CSV file and performs some preprocessing on it.
+    - Reads the CSV file from '../datasets/data_files/flights_data_002.csv'
+    - Drops the 'conversion' column
+    - Converts 'local_arrival' and 'local_departure' columns to datetime format
+    - Fills missing values in 'bags_price' and 'availability' columns by grouping flights by 'distance' and
+      filling them with the first non-null value within each group
+    - Creates a dictionary with city-category score pairs
+    - Extracts the city and assigns a category score to it based on the above dictionary
+    - Drops unnecessary columns such as 'fare', 'luggage_weight', 'availability', 'local_arrival', 'airlines',
+      'score', 'bags_price', and 'countryTo'
+    - Returns the preprocessed DataFrame
+    """
+
     df = pd.read_csv("../datasets/data_files/flights_data_002.csv")
     df = df.drop(['conversion'], axis=1)
     df['local_arrival'] = pd.to_datetime(df['local_arrival'])
