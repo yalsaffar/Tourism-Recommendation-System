@@ -37,8 +37,8 @@ def clf( UserId,user_df, pool_df,cosine_sim,location,previous='ALC'):
     """
 
     #titles,indices, cosine_sim, df = model_computations()
-    titles = pd.read_csv('../datasets/data_files/titles.csv')
-    df = pd.read_csv('../datasets/data_files/df.csv')
+    titles = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/titles.csv')
+    df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/df.csv')
     df2 = df.reset_index()
     titles = pd.Series(df2['Description'])
     indices = pd.Series(df2.index, index = df2['Description'])
@@ -101,8 +101,8 @@ def clf( UserId,user_df, pool_df,cosine_sim,location,previous='ALC'):
     return reco_final.iloc[0], City, Category, Price_flight, time
 #------------------------------------------------------------
 def Rent_Reco(location,previous,best_price,best_beds,best_People,best_reviews):
-    titles = pd.read_csv('../datasets/data_files/titles_air.csv')
-    df = pd.read_csv('../datasets/data_files/airbnb_clean.csv')
+    titles = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/titles_air.csv')
+    df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/airbnb_clean.csv')
     df2 = df.reset_index()
     titles = pd.Series(df2['Text'])
     indices = pd.Series(df2.index, index = df2['Text'])
@@ -232,8 +232,8 @@ def clf_places(City,UserId,user_df,previous = 712):
         City = 'Malaga'
     #places_titles = pd.read_csv('../datasets/data_files/Titles_Places.csv')
     #places_indices = pd.read_csv('../datasets/data_files/Indices_Places.csv')
-    places_cosine_sim = np.load('../datasets/data_files/Cosine_Similarity_Places.npy')
-    places_df = pd.read_csv('../datasets/data_files/places_activities_spain_final.csv')
+    places_cosine_sim = np.load('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/Cosine_Similarity_Places.npy')
+    places_df = pd.read_csv('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets/data_files/places_activities_spain_final.csv')
     recos = Places_reco(City, places_cosine_sim, places_df, previous)
     recommended_place = place_recommendation(user_df, UserId, previous, recos)
     recommended_place = recommended_place.reset_index()
