@@ -5,9 +5,9 @@ import numpy as np
 
 ## System path
 
-os.chdir('..')
-sys.path.append('../datasets')
-sys.path.append('../models')
+os.chdir('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib')
+sys.path.append('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/datasets')
+sys.path.append('/home/runner/work/Tourism-Recommendation-System/Tourism-Recommendation-System/lib/models')
 
 ## /datasets imports
 
